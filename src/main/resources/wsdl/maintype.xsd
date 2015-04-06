@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://pgu.gosuslugi.ru/ProcessingCenter"
+           xmlns:tns="http://pgu.gosuslugi.ru/ProcessingCenter"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import schemaLocation="changeOrderInfo.xsd" namespace="http://smev.gosuslugi.ru/rev120315"/>
+    <!--<xs:include schemaLocation="dictionary.xsd" />-->
+
+
+    <xs:element name="RegNumbers" type="tns:RegNumbersType"/>
+    <xs:element name="RegistrationAction" type="tns:RegistrationActionType"/>
+    <xs:element name="Vote" type="tns:VoteType"/>
+
+    <xs:element name="SearchParticipants" type="tns:SearchParticipantsType" />
+
+    <xs:element name="DictionaryData" type="tns:SearchParticipantsByFieldType" />
+    <xs:element name="DictionaryDataResponse" type="tns:SearchCitiesResponseAppDataType" />
+    <xs:element name="Response" type="tns:ResponseAppDataType"/>
+    <xs:element name="GetRegNumbers" type="tns:RegNumbersResponseAppDataType"/>
+    <xs:element name="SearchResponse" type="tns:SearchResponseAppDataType"/>
+    <xs:element name="SearchCitiesResponse" type="tns:SearchCitiesResponseAppDataType"/>
+    <xs:element name="SearchSchoolResponse" type="tns:CityType"/>
+    <xs:element name="SearchSchoolClassResponse" type="tns:SchoolClassType"/>
+    <xs:element name="SearchParticipantResponse" type="tns:RegistrationActionType"/>
+
+    <xs:complexType name="RegNumbersType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="RegNo" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="SchoolCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="IsUsed" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResponseAppDataType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Result" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="RegNumbersResponseAppDataType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Used" type="tns:RegNumbersResponse"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="NotUsed" type="tns:RegNumbersResponse"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RegNumbersResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="regNo" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SearchResponseAppDataType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="ResultParticipant" type="tns:ResultParticipantType"/>
+            <xs:element name="DataVoter" type="tns:DataVoterType" minOccurs="0"  maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SearchCitiesResponseAppDataType">
+        <xs:sequence>
+            <xs:element name="City" type="tns:CityType" minOccurs="1"  maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CityType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="CityCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CityName" type="xs:string"/>
+            <xs:element name="School" type="tns:SchoolType" minOccurs="1"  maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SchoolType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="SchoolCode" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="SchoolName" type="xs:string"/>
+            <xs:element name="SchoolClass" type="tns:SchoolClassType" minOccurs="0"  maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SchoolClassType">
+        <xs:sequence>
+            <xs:element minOccurs="0"  maxOccurs="1" name="ClassName" type="xs:string"/>
+            <xs:element minOccurs="0"  maxOccurs="unbounded" name="Participant" type="tns:RegistrationActionType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResultParticipantType">
+        <xs:sequence>
+            <xs:element name="Participant" type="tns:RegistrationActionType" minOccurs="0"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="CountVotes" type="xs:string"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RegistrationActionType">
+        <xs:annotation>
+            <xs:documentation>Регистрация в акции</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FieldDropdownCodeCityr" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownNameCityr" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownCodeSchoolr" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownNameSchoolr" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownClassr" type="xs:string" minOccurs="1"/>
+            <xs:element name="Schoolmanr" type="xs:string" minOccurs="1"/>
+            <xs:element name="UserIdInitiator" type="xs:string" minOccurs="1"/>
+            <xs:element name="RegNo" type="xs:string" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DataVoterType">
+        <xs:annotation>
+            <xs:documentation>Данные по голосовавшему</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FioVoter" type="xs:string" minOccurs="0"/>
+            <xs:element name="Date" type="xs:dateTime" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="VoteType">
+        <xs:annotation>
+            <xs:documentation>Голосование</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FioVoter" type="xs:string" minOccurs="1"/>
+            <xs:element name="UserId" type="xs:string" minOccurs="1"/>
+            <xs:element name="RegNo" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownCodeCityg" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownCodeSchoolg" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownClassg" type="xs:string" minOccurs="1"/>
+            <xs:element name="FieldDropdownChildreng" type="xs:string" minOccurs="1"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SearchParticipantsType">
+        <xs:annotation>
+            <xs:documentation>Поиск</xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:element name="SearchParticipantsByFIO" type="tns:SearchParticipantsByFIOType"/>
+            <xs:element name="SearchParticipantsByInitiator" type="tns:SearchParticipantsByFIOType"/>
+            <xs:element name="SearchParticipantsByField" type="tns:SearchParticipantsByFieldType"/>
+            <xs:element name="SearchTOP" type="tns:SearchTOPType"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="SearchParticipantsByFIOType">
+        <xs:annotation>
+            <xs:documentation>Поиск по ФИО</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FIOParticipant" type="xs:string" minOccurs="1"/>
+            <xs:element name="UserIdInitiator" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SearchParticipantsByFieldType">
+        <xs:annotation>
+            <xs:documentation>Поиск по параметру</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="CityCode" type="xs:string" minOccurs="1"/>
+            <xs:element name="SchoolCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="SchoolClass" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SearchTOPType">
+        <xs:annotation>
+            <xs:documentation>Поиск лидеров голосования</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Count" type="xs:integer" minOccurs="1"/>
+            <xs:element name="CityCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="UserId" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    
+</xs:schema>

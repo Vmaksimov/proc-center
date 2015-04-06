@@ -1,0 +1,35 @@
+.classpath
+.gradle/
+.project
+.settings/
+bin/
+build/
+target/
+logs/
+
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+# Idea #
+*.iws
+*.ipr
+*.iml
+*.ids
+.idea/
+
+# Gradle #
+build/
+out/
+.gradle/
+
+# Log #
+*.log
+
+# db #
+*.db
+*.db-shm
+*.db-wal
+db/

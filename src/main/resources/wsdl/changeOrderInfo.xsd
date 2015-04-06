@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" attributeFormDefault="unqualified"
+           targetNamespace="http://smev.gosuslugi.ru/rev120315"
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:element name="changeOrderInfo">
+    <xsd:complexType>
+        <xsd:annotation>
+            <xsd:documentation>
+                Информация для изменения статуса заявки в ЛК
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="orderId">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Cтатус заявки
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:choice>
+                        <xsd:element name="pguId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Id заявки на портале
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="orgId" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Id заявки в ведомстве
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="statusCode">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Новый статус заявки
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:complexType>
+                    <xsd:choice>
+                        <xsd:element name="orgCode" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Код статуса ведомства
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                        <xsd:element name="techCode" type="xsd:string">
+                            <xsd:annotation>
+                                <xsd:documentation>
+                                    Код статуса ЕПГУ
+                                </xsd:documentation>
+                            </xsd:annotation>
+                        </xsd:element>
+                    </xsd:choice>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="comment" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Комментарий
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="cancelAllowed" type="xsd:boolean" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        Возможность отмены
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:element>
+</xsd:schema>

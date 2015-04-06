@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://smev.gosuslugi.ru/request/fed/rev120528" xmlns:smev="http://smev.gosuslugi.ru/request/rev111111" xmlns:fed="http://smev.gosuslugi.ru/request/fed/rev120528">
+    <xs:import namespace="http://smev.gosuslugi.ru/request/rev111111" />
+    <xs:element name="Data">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fed:Form" minOccurs="1" maxOccurs="1"/>
+                <!--<xs:element ref="smev:AppliedDocuments" minOccurs="0" maxOccurs="1"/>-->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Form">
+        <xs:annotation>
+            <xs:documentation>Используется для передачи данных формы. Данные формы могут быть переданы только внутри FormData</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

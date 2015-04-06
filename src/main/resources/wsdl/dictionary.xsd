@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="http://pgu.gosuslugi.ru/ProcessingCenter"
+           xmlns:tns="http://pgu.gosuslugi.ru/ProcessingCenter"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <xs:element name="listRefAttributesAppData" type="tns:dictionaryType"/>
+    <xs:element name="listRefAttributesAppDataResponse" type="tns:listRefAttributesTypes"/>
+    <xs:element name="listRefItemsAppData" type="tns:dictionaryType"/>
+    <xs:element name="listRefItemsAppDataResponse" type="tns:listRefItemsTypes"/>
+
+    <xs:complexType name="dictionaryType">
+        <xs:annotation>
+            <xs:documentation>Request listRefAttributes and listRefItems</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="refName" type="xs:string" minOccurs="1"/>
+
+            <xs:element name="parentRefItemCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="treeFiltering" type="xs:string" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:element name="ONELEVEL" type="xs:string"/>
+                        <xs:element name="SUBTREE" type="xs:string"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="selectAttributes" type="xs:string" minOccurs="0"/>
+            <xs:element name="filter" type="xs:string" minOccurs="0"/>
+            <xs:element name="orderByAttributes" type="xs:string" minOccurs="0"/>
+            <xs:element name="pageNum" type="xs:string" minOccurs="0"/>
+            <xs:element name="pageSize" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="listRefAttributesTypes">
+        <xs:sequence>
+        <xs:element name="attributes" type="tns:attributesType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="attributesType">
+        <xs:annotation>
+            <xs:documentation>Response listRefAttributes</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="title" type="xs:string" minOccurs="1"/>
+            <xs:element name="type" type="xs:string" minOccurs="1"/>
+            <xs:element name="multiple" type="xs:string" minOccurs="0"/>
+            <xs:element name="allowFiltering" type="xs:string" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="listRefItemsTypes">
+        <xs:sequence>
+            <xs:element name="items" type="tns:itemsType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="itemsType">
+        <xs:annotation>
+            <xs:documentation>Response listRefItems</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="value" type="xs:string" minOccurs="1"/>
+            <xs:element name="parentValue" type="xs:string" minOccurs="0"/>
+            <xs:element name="title" type="xs:string" minOccurs="1"/>
+            <xs:element name="isLeaf" type="xs:string" minOccurs="1"/>
+            <xs:element name="children" type="xs:string" minOccurs="0"/>
+            <xs:element name="attributes" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        maven { url "https://repo.spring.io/release" }
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.5.RELEASE")
+        classpath('org.springframework:springloaded:1.1.5.RELEASE')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+//apply plugin: 'war'
+
+/*war {
+    baseName = 'processing-center'
+}*/
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://repo.spring.io/release" }
+}
+
+
+jar {
+    baseName = 'processing-center'
+}
+
+springBoot {
+    mainClass = "ru.atc.pgu.proccenter.config.Application"
+}
+compileJava.options.encoding = 'UTF-8'
+
+/*configurations {
+    providedRuntime
+}*/
+dependencies {
+//    compile 'org.springframework.boot:spring-boot-starter-parent'
+    compile("org.springframework.boot:spring-boot-starter-web")
+//    compile 'org.springframework.boot:spring-boot-starter'
+//    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+
+//    compile 'org.springframework:spring-context-support:4.0.6.RELEASE'
+    compile("org.apache.commons:commons-io:1.3.2")
+    compile("commons-lang:commons-lang:2.3")
+    compile("wsdl4j:wsdl4j:1.6.1")
+    //JAXWS
+    compile 'org.apache.cxf:cxf-rt-frontend-jaxws:2.7.8'
+    compile 'org.apache.cxf:cxf-rt-transports-http:2.7.8'
+
+//    providedCompile 'javax.servlet:servlet-api:2.5'
+    compile ('ru.atc.smev:smev-services-api:1.12-SNAPSHOT')
+            {
+                exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+                exclude group: 'ru.atc.smev.messagelog', module: 'messagelog-ws-api'
+                exclude group: 'log4j', module: 'log4j'
+                exclude group: 'org.jboss', module: 'jbossws-spi'
+                exclude group: 'org.jboss.ws.native', module: 'jbossws-native-core'
+                exclude group: 'javax.xml.bind', module: 'jbossws-spi'
+                exclude group: 'com.sun.xml.bind', module: 'jaxb-api'
+                exclude group: 'ru.nvg.idecs.common', module: 'common-ds-util'
+                exclude group: 'net.sf.ehcache', module: 'ehcache-core'
+                exclude group: 'commons-pool', module: 'commons-pool'
+                exclude group: 'ru.nvg.idecs.identityservice', module: 'identityservice-ws-api'
+                exclude group: 'org.opensaml', module: 'opensaml'
+                exclude group: 'commons-beanutils', module: 'commons-beanutils'
+            }
+//    compile 'org.apache.santuario:xmlsec:1.4.5'
+    compile 'xalan:xalan:2.7.1'
+    compile 'ru.CryptoPro.JCP:JCPxml:1.0.47'
+    compile 'ru.CryptoPro.JCP:JCP:1.0.47'
+    /*compile ('org.apache.ws.security:wss4j:1.5.11')
+            {
+                exclude group: 'org.slf4j', module: 'slf4j-log4j12' //by artifact name
+            }*/
+
+    //hsqldb
+    compile 'org.hsqldb:hsqldb:2.3.2'
+    compile 'commons-dbcp:commons-dbcp:1.4'
+
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}

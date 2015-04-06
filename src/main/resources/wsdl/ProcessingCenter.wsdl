@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="ProcessingCenter"
+                  targetNamespace="http://pgu.gosuslugi.ru/ProcessingCenter"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://pgu.gosuslugi.ru/ProcessingCenter"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+				  xmlns:smev="http://smev.gosuslugi.ru/rev120315">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://pgu.gosuslugi.ru/ProcessingCenter" >
+            <xsd:import schemaLocation="smev.xsd" namespace="http://smev.gosuslugi.ru/rev120315"/>
+            <xsd:element name="registrationAndVoteRequest" type="smev:BaseMessageType" />
+            <xsd:element name="registrationAndVoteResponse" type="smev:BaseMessageType" />
+            <xsd:element name="regNumberRequest" type="smev:BaseMessageType" />
+            <xsd:element name="regNumberResponse" type="smev:BaseMessageType" />
+            <!--<xsd:element name="voteRequest" type="smev:BaseMessageType" />-->
+            <!--<xsd:element name="voteResponse" type="smev:BaseMessageType" />-->
+            <xsd:element name="searchParticipantsRequest" type="smev:BaseMessageType" />
+            <xsd:element name="searchParticipantsResponse" type="smev:BaseMessageType" />
+            <xsd:element name="dictionaryRequest" type="smev:BaseMessageType" />
+            <xsd:element name="dictionaryResponse" type="smev:BaseMessageType" />
+        </xsd:schema>
+    </wsdl:types>
+
+  <wsdl:message name="registrationAndVoteRequest">
+    <wsdl:part name="parameters" element="tns:registrationAndVoteRequest"/>
+  </wsdl:message>
+  <wsdl:message name="RequestMessage_Headers">
+    <wsdl:part name="Header" element="q1:Header" xmlns:q1="http://smev.gosuslugi.ru/rev120315"/>
+  </wsdl:message>
+  <wsdl:message name="registrationAndVoteResponse">
+    <wsdl:part name="parameters" element="tns:registrationAndVoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ResponseMessage_Headers">
+    <wsdl:part name="Header" element="q2:Header" xmlns:q2="http://smev.gosuslugi.ru/rev120315"/>
+  </wsdl:message>
+
+    <wsdl:message name="regNumberRequest">
+        <wsdl:part name="parameters" element="tns:regNumberRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="regNumberResponse">
+        <wsdl:part name="parameters" element="tns:regNumberResponse"/>
+    </wsdl:message>
+
+   <!-- <wsdl:message name="voteRequest">
+        <wsdl:part name="parameters" element="tns:voteRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="voteResponse">
+        <wsdl:part name="parameters" element="tns:voteResponse"/>
+    </wsdl:message>-->
+
+
+    <wsdl:message name="searchParticipantsRequest">
+        <wsdl:part name="parameters" element="tns:searchParticipantsRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="searchParticipantsResponse">
+        <wsdl:part name="parameters" element="tns:searchParticipantsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="dictionaryRequest">
+        <wsdl:part name="parameters" element="tns:dictionaryRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="dictionaryResponse">
+        <wsdl:part name="parameters" element="tns:dictionaryResponse"/>
+    </wsdl:message>
+   <!-- <wsdl:message name="listRefAttributesRequest">
+        <wsdl:part name="parameters" element="tns:listRefAttributesRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="listRefAttributesResponse">
+        <wsdl:part name="parameters" element="tns:listRefAttributesResponse"/>
+    </wsdl:message>-->
+
+
+   <!-- <wsdl:message name="listRefItemsRequest">
+        <wsdl:part name="parameters" element="tns:listRefItemsRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="listRefItemsResponse">
+        <wsdl:part name="parameters" element="tns:listRefItemsResponse"/>
+    </wsdl:message>-->
+
+  <wsdl:portType name="ProcessingCenter">
+      <wsdl:operation name="regNumber">
+          <wsdl:input  name="regNumberRequest" message="tns:regNumberRequest"/>
+          <wsdl:output  name="regNumberResponse" message="tns:regNumberResponse"/>
+      </wsdl:operation>
+    <wsdl:operation name="registrationAndVote">
+      <wsdl:input  name="registrationAndVoteRequest" message="tns:registrationAndVoteRequest"/>
+      <wsdl:output  name="registrationAndVoteResponse" message="tns:registrationAndVoteResponse"/>
+    </wsdl:operation>
+  <!--    <wsdl:operation name="vote">
+          <wsdl:input name="voteRequest" message="tns:voteRequest"/>
+          <wsdl:output name="voteResponse" message="tns:voteResponse"/>
+      </wsdl:operation>-->
+      <wsdl:operation name="searchParticipants">
+          <wsdl:input name="searchParticipantsRequest" message="tns:searchParticipantsRequest"/>
+          <wsdl:output name="searchParticipantsResponse" message="tns:searchParticipantsResponse"/>
+      </wsdl:operation>
+      <wsdl:operation name="dictionary">
+          <wsdl:input name="dictionaryRequest" message="tns:dictionaryRequest"/>
+          <wsdl:output name="dictionaryResponse" message="tns:dictionaryResponse"/>
+      </wsdl:operation>
+      <!--<wsdl:operation name="listRefAttributes">
+          <wsdl:input name="listRefAttributesRequest" message="tns:listRefAttributesRequest"/>
+          <wsdl:output name="listRefAttributesResponse" message="tns:listRefAttributesResponse"/>
+      </wsdl:operation>
+      <wsdl:operation name="listRefItems">
+          <wsdl:input name="listRefItemsRequest" message="tns:listRefItemsRequest"/>
+          <wsdl:output name="listRefItemsResponse" message="tns:listRefItemsResponse"/>
+      </wsdl:operation>-->
+  </wsdl:portType>
+
+  <wsdl:binding name="BasicHttpBinding_ProcessingCenter" type="tns:ProcessingCenter">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="regNumber">
+          <soap:operation soapAction="http://pgu.gosuslugi.ru/ProcessingCenter/regNumber" style="document"/>
+          <wsdl:input name="regNumberRequest">
+              <soap:header message="tns:RequestMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:input>
+          <wsdl:output name="regNumberResponse">
+              <soap:header message="tns:ResponseMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="registrationAndVote">
+          <soap:operation soapAction="http://pgu.gosuslugi.ru/ProcessingCenter/registrationAndVote" style="document"/>
+          <wsdl:input name="registrationAndVoteRequest">
+              <soap:header message="tns:RequestMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:input>
+          <wsdl:output name="registrationAndVoteResponse">
+              <soap:header message="tns:ResponseMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:output>
+      </wsdl:operation>
+  <!--    <wsdl:operation name="vote">
+          <soap:operation soapAction="http://pgu.gosuslugi.ru/ProcessingCenter/vote" style="document"/>
+          <wsdl:input name="voteRequest">
+              <soap:header message="tns:RequestMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:input>
+          <wsdl:output name="voteResponse">
+              <soap:header message="tns:ResponseMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:output>
+      </wsdl:operation>-->
+      <wsdl:operation name="searchParticipants">
+          <soap:operation soapAction="http://pgu.gosuslugi.ru/ProcessingCenter/searchParticipants" style="document"/>
+          <wsdl:input name="searchParticipantsRequest">
+              <soap:header message="tns:RequestMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:input>
+          <wsdl:output name="searchParticipantsResponse">
+              <soap:header message="tns:ResponseMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="dictionary">
+          <soap:operation soapAction="http://pgu.gosuslugi.ru/ProcessingCenter/dictionary" style="document"/>
+          <wsdl:input name="dictionaryRequest">
+              <soap:header message="tns:RequestMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:input>
+          <wsdl:output name="dictionaryResponse">
+              <soap:header message="tns:ResponseMessage_Headers" part="Header" use="literal"/>
+              <soap:body use="literal"/>
+          </wsdl:output>
+      </wsdl:operation>
+
+  </wsdl:binding>
+
+    <wsdl:service name="ProcessingCenter">
+        <wsdl:port name="BasicHttpBinding_ProcessingCenter" binding="tns:BasicHttpBinding_ProcessingCenter">
+            <soap:address location="http://localhost/ProcessingCenter"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
