@@ -48,12 +48,12 @@ public class CXFConfig {
         EndpointImpl endpoint = new EndpointImpl(cxfBus, processingCenter);
         endpoint.setAddress("/procService");
         endpoint.getInInterceptors().add(requestInterceptor);
-        String[] profiles = env.getActiveProfiles();
+        /*String[] profiles = env.getActiveProfiles();
         for (int i = 0; i < profiles.length; i++) {
-            if (profiles[i].equals("production")) {
+            if (profiles[i].equals("production")) {*/
                 endpoint.getOutInterceptors().add(responseInterceptor);
-            }
-        }
+           /* }
+        }*/
         endpoint.publish();
         return endpoint;
     }

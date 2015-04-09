@@ -12,11 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import ru.atc.pgu.proccenter.utils.BuildAnswerUtils;
 import ru.atc.pgu.proccenter.utils.IOUtils;
 import ru.atc.smev.crypto.XmlSignatureTool;
 import ru.gosuslugi.smev.signaturetool.xsd.Part4SignType;
 
+import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -86,7 +91,7 @@ public class ResponseInterceptor extends AbstractSoapInterceptor {
 
         public void handleMessage(SoapMessage mc) throws Fault {
 
-            /*if (mc == null) {
+            if (mc == null) {
                 return;
             }
             SOAPMessage saaj = mc.getContent(SOAPMessage.class);
@@ -113,7 +118,7 @@ public class ResponseInterceptor extends AbstractSoapInterceptor {
                 e.printStackTrace();
             }
             String originRequestIdRef = mc.getExchange().getInMessage().getContextualProperty(RequestInterceptor.originRequestIdRef).toString();
-            logger.debug("Response xml[originRequestIdRef = "+ originRequestIdRef +"]:  " + outputXML);*/
+            logger.debug("Response xml[originRequestIdRef = "+ originRequestIdRef +"]:  " + outputXML);
         }
 
         @Override

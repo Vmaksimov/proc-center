@@ -14,11 +14,11 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-//apply plugin: 'war'
+apply plugin: 'war'
 
-/*war {
+war {
     baseName = 'processing-center'
-}*/
+}
 
 
 repositories {
@@ -28,9 +28,9 @@ repositories {
 }
 
 
-jar {
+/*jar {
     baseName = 'processing-center'
-}
+}*/
 
 springBoot {
     mainClass = "ru.atc.pgu.proccenter.config.Application"
