@@ -118,7 +118,7 @@ public class ResponseInterceptor extends AbstractSoapInterceptor {
                 e.printStackTrace();
             }
             try {
-//                outputXML = signSoapRequest(outputXML);
+                outputXML = signSoapRequest(outputXML);
                 mc.setContent(SOAPMessage.class, BuildAnswerUtils.getSoapMessageFromString(outputXML));
             } catch (SOAPException e) {
                 e.printStackTrace();

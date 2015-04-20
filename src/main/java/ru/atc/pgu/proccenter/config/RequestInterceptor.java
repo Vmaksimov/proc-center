@@ -72,6 +72,7 @@ public class RequestInterceptor extends AbstractSoapInterceptor {
         if(element.isEmpty()) {
             element = UUID.randomUUID().toString();
         }
+        logger.info("Request [originRequestIdRef = "+ element +"]");
         logger.debug("Request xml[originRequestIdRef = "+ element +"]: " + incommingXML);
         String inputName = message.getExchange().getBindingOperationInfo().getOperationInfo().getInputName();
         if (!inputName.equalsIgnoreCase("searchParticipants") && !inputName.equalsIgnoreCase("dictionary") && !inputName.equalsIgnoreCase("regNumber")) {
