@@ -143,102 +143,92 @@ public class ProcessingCenter_Service implements ProcessingCenter{
 
     @Override
     public BaseMessageType registrationAndVote(BaseMessageType parameters) {
-        /*boolean existReqXml = false;
-        if (parameters.getMessageData().getAppDocument() != null) {
-            List<EntityFileContent> files = getEntityFileContents(parameters);
-            for (EntityFileContent file : files) {
-                if (file.getName().startsWith("req_") && file.getName().endsWith(".xml")) {
-                    existReqXml = true;
-                    String xml = getForm(file);
-                    RegistrationActionType registrationActionType = (RegistrationActionType) convertXmlToPojoJaxbEl(xml, objFactories);*/
-                    JAXBElement registrationActionTypeJAXBElement = (JAXBElement) parameters.getMessageData().getAppData().getAny().get(0);
-                    if (registrationActionTypeJAXBElement.getValue() instanceof RegistrationActionType) {
-                        RegistrationActionType registrationActionType = (RegistrationActionType) registrationActionTypeJAXBElement.getValue();
-                        if (registrationActionType.getRegNo() != null) {
-                            NumberParticipant numberParticipant = numberParticipantDAO.findByRegNo(registrationActionType.getRegNo());
-                            if (numberParticipant != null) {
-                                Participant byNumberParticipant = participantDAO.findByNumberParticipant(numberParticipant);
-                                if (byNumberParticipant != null) {
-                                    return responseAppDataTypeWithChangeOrderInfo(parameters, "Участник зарегистрирован ранее");
-                                }
-                                Participant participant = new Participant();
-                                School school = schoolDAO.findByCode(registrationActionType.getFieldDropdownCodeSchoolr());
-                                if (school == null) {
-                                    return responseAppDataTypeWithChangeOrderInfo(parameters, "Школа не найдена");
-                                }
-                                SchoolClass schoolClass = schoolClassDAO.findByNameAndSchool(registrationActionType.getFieldDropdownClassr(), school);
-                                if (schoolClass == null){
-                                    return responseAppDataTypeWithChangeOrderInfo(parameters, "Класс для указанной школы не найден");
-                                }
-                                participant.setSchoolClass(schoolClass);
-                                participant.setFio(registrationActionType.getSchoolmanr());
-                                participant.setUserIdInitiator(registrationActionType.getUserIdInitiator());
-                                XmlData xmlData = xmlDataDAO.findByOriginIdRef(parameters.getMessage().getOriginRequestIdRef());
-                                if (xmlData != null) {
-                                    participant.setXmlData(xmlData);
-                                }
-                                participant.setNumberParticipant(numberParticipant);
-                                City city = cityDAO.findByCode(registrationActionType.getFieldDropdownCodeCityr());
-                                city.getParticipant().add(participant);
 
-                                numberParticipant.setUsed(true);
+        try {
+            JAXBElement registrationActionTypeJAXBElement = (JAXBElement) parameters.getMessageData().getAppData().getAny().get(0);
+            if (registrationActionTypeJAXBElement.getValue() instanceof RegistrationActionType) {
+                RegistrationActionType registrationActionType = (RegistrationActionType) registrationActionTypeJAXBElement.getValue();
+                if (registrationActionType.getRegNo() != null) {
+                    NumberParticipant numberParticipant = numberParticipantDAO.findByRegNo(registrationActionType.getRegNo());
+                    if (numberParticipant != null) {
+                        Participant byNumberParticipant = participantDAO.findByNumberParticipant(numberParticipant);
+                        if (byNumberParticipant != null) {
+                            return responseAppDataTypeWithChangeOrderInfo(parameters, "Участник зарегистрирован ранее");
+                        }
+                        Participant participant = new Participant();
+                        School school = schoolDAO.findByCode(registrationActionType.getFieldDropdownCodeSchoolr());
+                        if (school == null) {
+                            return responseAppDataTypeWithChangeOrderInfo(parameters, "Школа не найдена");
+                        }
+                        SchoolClass schoolClass = schoolClassDAO.findByNameAndSchool(registrationActionType.getFieldDropdownClassr(), school);
+                        if (schoolClass == null) {
+                            return responseAppDataTypeWithChangeOrderInfo(parameters, "Класс для указанной школы не найден");
+                        }
+                        participant.setSchoolClass(schoolClass);
+                        participant.setFio(registrationActionType.getSchoolmanr());
+                        participant.setUserIdInitiator(registrationActionType.getUserIdInitiator());
+                        XmlData xmlData = xmlDataDAO.findByOriginIdRef(parameters.getMessage().getOriginRequestIdRef());
+                        if (xmlData != null) {
+                            participant.setXmlData(xmlData);
+                        }
+                        participant.setNumberParticipant(numberParticipant);
+                        City city = cityDAO.findByCode(registrationActionType.getFieldDropdownCodeCityr());
+                        city.getParticipant().add(participant);
 
-                                participantDAO.save(participant);
-                                numberParticipantDAO.save(numberParticipant);
-                                cityDAO.save(city);
+                        numberParticipant.setUsed(true);
+
+                        participantDAO.save(participant);
+                        numberParticipantDAO.save(numberParticipant);
+                        cityDAO.save(city);
                                     /*school.getParticipant().add(participant);
                                     schoolDAO.save(school);
 
                                     schoolClass.getParticipant().add(participant);
                                     schoolClassDAO.save(schoolClass);*/
 
-                                logger.info("Registration action[originRequestIdRef = " + parameters.getMessage().getOriginRequestIdRef() + ", regNo = " + registrationActionType.getRegNo() + "]: successfully");
-                            } else {
-                                return responseAppDataTypeWithChangeOrderInfo(parameters, "Регистрационный номер не существует");
-                            }
-                        } else {
-                            return responseAppDataTypeWithChangeOrderInfo(parameters, "element 'RegNo' cannot be null");
-                        }
-                        return responseAppDataTypeWithChangeOrderInfo(parameters, "Участник зарегистрирован в акции");
-                    }else if (registrationActionTypeJAXBElement.getValue() instanceof VoteType){
-                        VoteType voteType = (VoteType) registrationActionTypeJAXBElement.getValue();
+                        logger.info("Registration action[originRequestIdRef = " + parameters.getMessage().getOriginRequestIdRef() + ", regNo = " + registrationActionType.getRegNo() + "]: successfully");
+                    } else {
+                        return responseAppDataTypeWithChangeOrderInfo(parameters, "Регистрационный номер не существует");
+                    }
+                } else {
+                    return responseAppDataTypeWithChangeOrderInfoError(parameters, "element 'RegNo' cannot be null");
+                }
+                return responseAppDataTypeWithChangeOrderInfo(parameters, "Участник зарегистрирован в акции");
+            } else if (registrationActionTypeJAXBElement.getValue() instanceof VoteType) {
+                VoteType voteType = (VoteType) registrationActionTypeJAXBElement.getValue();
 
-                        Voter voterDAOByUserId = voterDAO.findByUserId(voteType.getUserId());
-                        if (voterDAOByUserId != null){
-                            return responseAppDataTypeWithChangeOrderInfo(parameters, "Вы уже проголосовали ранее");
-                        }
-                        Voter voter = new Voter();
-                        voter.setFio(voteType.getFioVoter());
-                        voter.setUserId(voteType.getUserId());
-                        voter.setDate(new Date());
-                        XmlData xmlData = xmlDataDAO.findByOriginIdRef(parameters.getMessage().getOriginRequestIdRef());
-                        if (xmlData != null) {
-                            voter.setXmlData(xmlData);
-                        }
-                        NumberParticipant numberParticipant = numberParticipantDAO.findByRegNo(voteType.getRegNo());
-                        if (numberParticipant != null){
-                            Participant participant = participantDAO.findByNumberParticipant(numberParticipant);
-                            participant.getVoter().add(voter);
-                            participant.setCountVoter(participant.getVoter().size());
-                            participant.setDateLastVoter(voter.getDate());
-                            participantDAO.save(participant);
+                Voter voterDAOByUserId = voterDAO.findByUserId(voteType.getUserId());
+                if (voterDAOByUserId != null) {
+                    return responseAppDataTypeWithChangeOrderInfo(parameters, "Вы уже проголосовали ранее");
+                }
+                Voter voter = new Voter();
+                voter.setFio(voteType.getFioVoter());
+                voter.setUserId(voteType.getUserId());
+                voter.setDate(new Date());
+                XmlData xmlData = xmlDataDAO.findByOriginIdRef(parameters.getMessage().getOriginRequestIdRef());
+                if (xmlData != null) {
+                    voter.setXmlData(xmlData);
+                }
+                NumberParticipant numberParticipant = numberParticipantDAO.findByRegNo(voteType.getRegNo());
+                if (numberParticipant != null) {
+                    Participant participant = participantDAO.findByNumberParticipant(numberParticipant);
+                    participant.getVoter().add(voter);
+                    participant.setCountVoter(participant.getVoter().size());
+                    participant.setDateLastVoter(voter.getDate());
+                    participantDAO.save(participant);
 //                            voter.setParticipant(participant);
 //                            voterDAO.save(voter);
-                            logger.info("Vote[originRequestIdRef = "+ parameters.getMessage().getOriginRequestIdRef() +", regNo = " + voteType.getRegNo() +", voteUserId = "+ voteType.getUserId() +"]: successfully");
+                    logger.info("Vote[originRequestIdRef = " + parameters.getMessage().getOriginRequestIdRef() + ", regNo = " + voteType.getRegNo() + ", voteUserId = " + voteType.getUserId() + "]: successfully");
 
-                        }else{
-                            responseAppDataTypeWithChangeOrderInfo(parameters, "Регистрационный номер не существует");
-                        }
-                        return responseAppDataTypeWithChangeOrderInfo(parameters, "Голосование прошло успешно");
-                    }
-                /*}
-            }if (!existReqXml){
-                responseAppDataTypeWithChangeOrderInfo(parameters, "file req_GUID.xml cannot be null");
+                } else {
+                    return responseAppDataTypeWithChangeOrderInfo(parameters, "Регистрационный номер не существует");
+                }
+                return responseAppDataTypeWithChangeOrderInfo(parameters, "Голосование прошло успешно");
             }
-        }else{
-            return responseAppDataTypeWithChangeOrderInfo(parameters, "AppDocument cannot be null");
-        }*/
-        return null;
+        }catch (Exception e){
+            return responseAppDataTypeWithChangeOrderInfoError(parameters, "Ошибка["+ parameters.getMessage().getOriginRequestIdRef() +"]: " + e.getLocalizedMessage());
+        }
+        return responseAppDataTypeWithChangeOrderInfoError(parameters, "Непредвиденная ситуация");
     }
 
     @Override
@@ -582,7 +572,21 @@ public class ProcessingCenter_Service implements ProcessingCenter{
         messageData.setAppDocument(null);
         ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
         ChangeOrderInfo.StatusCode statusCode = new ChangeOrderInfo.StatusCode();
-        statusCode.setTechCode("1");
+        statusCode.setTechCode("3");
+        changeOrderInfo.setStatusCode(statusCode);
+        changeOrderInfo.setComment(resultMessage);
+        AppDataType appDataType = new AppDataType();
+        appDataType.getAny().add(changeOrderInfo);
+        messageData.setAppData(appDataType);
+        return parameters;
+    }
+
+    private BaseMessageType responseAppDataTypeWithChangeOrderInfoError(BaseMessageType parameters, String resultMessage) {
+        MessageDataType messageData = parameters.getMessageData();
+        messageData.setAppDocument(null);
+        ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
+        ChangeOrderInfo.StatusCode statusCode = new ChangeOrderInfo.StatusCode();
+        statusCode.setTechCode("-1");
         changeOrderInfo.setStatusCode(statusCode);
         changeOrderInfo.setComment(resultMessage);
         AppDataType appDataType = new AppDataType();

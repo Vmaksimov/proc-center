@@ -9,9 +9,14 @@ import org.apache.cxf.phase.Phase;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import ru.atc.pgu.proccenter.DAO.XmlDataDAO;
+import ru.atc.pgu.proccenter.domain.XmlData;
 import ru.atc.pgu.proccenter.utils.BuildAnswerUtils;
 import ru.atc.pgu.proccenter.utils.IOUtils;
 import ru.atc.smev.crypto.XmlSignatureTool;
@@ -39,6 +44,9 @@ public class ResponseInterceptor extends AbstractSoapInterceptor {
     String keyAlias;
     @Value("${crypto.password}")
     String password;
+
+    @Autowired
+    XmlDataDAO xmlDataDAO;
 
     private WSS4JOutInterceptorInternal ending;
     private SAAJOutInterceptor saajOut = new SAAJOutInterceptor();
@@ -110,14 +118,30 @@ public class ResponseInterceptor extends AbstractSoapInterceptor {
                 e.printStackTrace();
             }
             try {
-                String signSoapRequest = signSoapRequest(outputXML);
-                mc.setContent(SOAPMessage.class, BuildAnswerUtils.getSoapMessageFromString(signSoapRequest));
+//                outputXML = signSoapRequest(outputXML);
+                mc.setContent(SOAPMessage.class, BuildAnswerUtils.getSoapMessageFromString(outputXML));
             } catch (SOAPException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             String originRequestIdRef = mc.getExchange().getInMessage().getContextualProperty(RequestInterceptor.originRequestIdRef).toString();
+            String inputName = mc.getExchange().getBindingOperationInfo().getOperationInfo().getInputName();
+            if (!inputName.equalsIgnoreCase("searchParticipants") && !inputName.equalsIgnoreCase("dictionary") && !inputName.equalsIgnoreCase("regNumber")) {
+                XmlData xmlData = xmlDataDAO.findByOriginIdRef(originRequestIdRef);
+                if (xmlData != null) {
+                    try {
+                        xmlData.setResponseXml(outputXML);
+                        Node changeOrderInfo = BuildAnswerUtils.getTag(saaj, "changeOrderInfo");
+                        Node lastChild = changeOrderInfo.getLastChild();
+                        String textContent = lastChild.getTextContent();
+                        xmlData.setComment(textContent);
+                        xmlDataDAO.save(xmlData);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
             logger.debug("Response xml[originRequestIdRef = "+ originRequestIdRef +"]:  " + outputXML);
         }
 

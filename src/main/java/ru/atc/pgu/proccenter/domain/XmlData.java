@@ -17,6 +17,15 @@ public class XmlData {
     @Column(length=102400)
     private String responseXml;
 
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public String getOriginIdRef() {
         return originIdRef;

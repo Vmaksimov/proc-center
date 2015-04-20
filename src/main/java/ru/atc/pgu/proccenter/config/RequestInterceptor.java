@@ -74,7 +74,7 @@ public class RequestInterceptor extends AbstractSoapInterceptor {
         }
         logger.debug("Request xml[originRequestIdRef = "+ element +"]: " + incommingXML);
         String inputName = message.getExchange().getBindingOperationInfo().getOperationInfo().getInputName();
-        if (!inputName.equalsIgnoreCase("searchParticipants") && !inputName.equalsIgnoreCase("dictionary")) {
+        if (!inputName.equalsIgnoreCase("searchParticipants") && !inputName.equalsIgnoreCase("dictionary") && !inputName.equalsIgnoreCase("regNumber")) {
             XmlData XmlDataExisted = xmlDataDAO.findByOriginIdRef(element);
             XmlData xmlData = new XmlData();
             if (XmlDataExisted != null)
