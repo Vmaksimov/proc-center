@@ -572,7 +572,7 @@ public class ProcessingCenter_Service implements ProcessingCenter{
         messageData.setAppDocument(null);
         ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
         ChangeOrderInfo.StatusCode statusCode = new ChangeOrderInfo.StatusCode();
-        statusCode.setTechCode("3");
+        statusCode.setTechCode("1");
         changeOrderInfo.setStatusCode(statusCode);
         changeOrderInfo.setComment(resultMessage);
         AppDataType appDataType = new AppDataType();
